@@ -18,6 +18,7 @@ class SystemTrayIcon(QSystemTrayIcon):
         openAction.triggered.connect(self.open_main)
         exitAction.triggered.connect(self.quit)
         self.setContextMenu(menu)
+        self.setToolTip('System Update')
 
     def open_main(self):
         self.MainWindow = MainWindow()
@@ -53,10 +54,6 @@ class CenterWidget(QWidget):
         self.lbl.setText('')
         self.lbl.adjustSize()
 
-        self.labeltimer = QTimer(self)
-        self.labeltimer.timeout.connect(self.onChanged)
-        self.labeltimer.start(100)
-
         vbox = QVBoxLayout()
         vbox.addWidget(self.scrl)
         vbox.addWidget(self.pbr)
@@ -64,13 +61,6 @@ class CenterWidget(QWidget):
         self.setLayout(vbox)
 
         self.show()
-
-    def onChanged(self):
-        if os.path.exists('guitemp.txt'):
-            guitemp = open('guitemp.txt')
-            self.lbl.setText(guitemp.read())
-            self.lbl.adjustSize()
-
 
 
 class MainWindow(QMainWindow):
@@ -92,8 +82,10 @@ class MainWindow(QMainWindow):
 
         self.setToolTip('This is a <b>QWidget</b> widget')
 
-        self.statusBar().showMessage('Ready')
+        if not os.path.exists('guitemp.txt'):
+            self.cwidget.pbr.hide()
 
+        self.statusBar().showMessage('Ready')
 
         # btn = QPushButton('Quit', self)
         # btn.clicked.connect(QCoreApplication.instance().quit)
@@ -126,11 +118,24 @@ class MainWindow(QMainWindow):
         #     self.tray_icon = SystemTrayIcon(QIcon('Arch-linux-logo.png'), self)
         #     self.tray_icon.show()
 
+        self.labeltimer = QTimer(self)
+        self.labeltimer.timeout.connect(self.onChanged)
+        self.labeltimer.start(100)
+
         self.show()
 
     def startUpdate(self):
         self.updateThread = UpdateThread()
         self.updateThread.start()
+        self.cwidget.pbr.show()
+
+    def onChanged(self):
+        if os.path.exists('guitemp.txt'):
+            guitemp = open('guitemp.txt')
+            self.cwidget.lbl.setText(guitemp.read())
+            self.cwidget.lbl.adjustSize()
+            if self.updateThread.isFinished():
+                self.cwidget.pbr.hide()
 
     def center(self):
 
