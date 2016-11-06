@@ -60,6 +60,7 @@ class SystemTrayIcon(QSystemTrayIcon):
             if '(Y' in tempfv:
                 self.hide()
                 self.icon = QIcon('TrayUpdateAvailableIcon.png')
+                self.setToolTip('Update Available')
                 self.show()
             elif 'Foreign packages:' in tempfv:
                 self.hide()
