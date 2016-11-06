@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from PyQt5.QtWidgets import QAction, QLabel, QToolBar, QProgressBar, QVBoxLayout, QScrollArea, QMainWindow, QMenu, QSystemTrayIcon, QDesktopWidget, QMessageBox, QApplication, QWidget, QToolTip, QPushButton
+from PyQt5.QtWidgets import QAction, QLabel, QToolBar, QProgressBar, QVBoxLayout, QScrollArea, QMainWindow, QDesktopWidget, QMessageBox, QApplication, QWidget, QToolTip, QPushButton
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtCore import QCoreApplication, QTimer, QThread, Qt
 import os
