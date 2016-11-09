@@ -32,16 +32,16 @@ def Update(aur=1, forceRepoDown=1, noconfirm=1):
                 downloadcount += 1
                 downtemp.write(str(downloadcount) + '/' + str(packagenumber))
                 downtemp.close()
-            if 'upgrading' in str(line):
-                upgradecount += 1
-                if downloadcount != packagenumber:
-                    downtemp = open('downtemp.txt','w')
-                    downloadcount = packagenumber
-                    downtemp.write(str(downloadcount) + '/' + str(packagenumber))
-                    downtemp.close()
-                upgrtemp = open('guitemp.txt', 'w')
-                upgrtemp.write(str(upgradecount) + '/' + str(packagenumber))
-                upgrtemp.close()
+        if 'upgrading' in str(line):
+            upgradecount += 1
+            if downloadcount != packagenumber:
+                downtemp = open('downtemp.txt','w')
+                downloadcount = packagenumber
+                downtemp.write(str(downloadcount) + '/' + str(packagenumber))
+                downtemp.close()
+            upgrtemp = open('upgrtemp.txt', 'w')
+            upgrtemp.write(str(upgradecount) + '/' + str(packagenumber))
+            upgrtemp.close()
 
         # if 'Foreign packages:' in str(line):
         #     fpkline = str(line).replace("b'",'').replace("'",'').replace('\\\\','').replace(': /',': ').replace(': |',': ').replace(': -',': ').replace('\\r','\n').replace('\\n','\n').encode()
@@ -74,9 +74,10 @@ def Update(aur=1, forceRepoDown=1, noconfirm=1):
             guitempf.close()
         tempfr.close()
         tempfr = open('temp.txt')
-    if 'Foreign packages:' in tempfr.read():
+        tempfrv = tempfr.read()
+    if 'Foreign packages:' in tempfrv:
         print('System up to date')
-    if 'Error' in tempfr.read():
+    if 'Error' in tempfrv:
         print('System update failed.')
     tempfr.close()
     os.remove('temp.txt')
